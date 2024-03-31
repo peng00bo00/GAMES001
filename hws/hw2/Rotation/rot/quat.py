@@ -28,7 +28,16 @@ class Quaternion:
     def __mul__(self, other):
         # TODO: your code here
         # 返回两个四元数的乘积
-        raise NotImplementedError
+        # raise NotImplementedError
+        a, b, c, d = self.quat
+        e, f, g, h = other.quat
+
+        return Quaternion([
+                            a*e - b*f - c*g - d*h,
+                            b*e + a*f - d*g + c*h,
+                            c*e + d*f + a*g - b*h,
+                            d*e - c*f + b*g + a*h
+                        ])
 
     @staticmethod
     def Nlerp(a, b, t) -> "Quaternion":

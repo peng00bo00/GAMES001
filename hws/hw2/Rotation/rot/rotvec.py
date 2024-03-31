@@ -4,7 +4,21 @@ import numpy as np
 def rotvec2matrix(vec, degrees=False) -> np.ndarray:
     # TODO: your code here
     # 利用罗德里格旋转公式返回轴角表示对应的旋转矩阵
-    raise NotImplementedError
+    # raise NotImplementedError
+
+    norm    = np.sum(vec*vec)
+    theta   = np.sqrt(norm)
+    
+    u       = vec / theta
+    cross_u = np.array([
+                        [    0, -u[2],  u[1]],
+                        [ u[2],     0, -u[0]],
+                        [-u[1],  u[0],     0]
+                    ])
+
+    R = np.eye(3) + (1 - np.cos(theta)) * (cross_u @ cross_u) + np.sin(theta) * cross_u
+    
+    return R
 
 
 def matrix2rotvec(matrix) -> np.ndarray:
