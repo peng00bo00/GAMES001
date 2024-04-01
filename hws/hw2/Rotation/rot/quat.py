@@ -43,11 +43,39 @@ class Quaternion:
     def Nlerp(a, b, t) -> "Quaternion":
         # TODO: your code here
         # 返回 Nlerp 插值结果
-        raise NotImplementedError
+        # raise NotImplementedError
+        # return b
+    
+        q0 = a.quat
+        q1 = b.quat
+
+        qt = np.array([(1-t)*x + t*y for x,y in zip(q0, q1)])
+        qt = qt / np.linalg.norm(qt)
+
+        return Quaternion(qt)
 
     @staticmethod
     def Slerp(a, b, t, short_path=True) -> "Quaternion":
         # TODO: your code here
         # short_path 为 True 时，返回最小弧的 Slerp 插值结果
         # 返回 Slerp 插值结果
-        raise NotImplementedError
+        # raise NotImplementedError
+        # return b
+
+        q0 = a.quat
+        q1 = b.quat
+
+        theta = np.arccos(np.sum(q0 * q1))
+        cos = np.cos(theta)
+
+        if cos < 0 and short_path:
+            bb = Quaternion([-x for x in q1])
+            return Quaternion.Slerp(a, bb, t, False)
+        
+        sin   = np.sin(theta)
+        alpha = np.sin((1-t) * theta) / sin
+        beta  = np.sin(t * theta) / sin
+
+        qt = np.array([alpha*x + beta*y for x,y in zip(q0, q1)])
+
+        return Quaternion(qt)
