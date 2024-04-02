@@ -103,7 +103,7 @@ def update(maxIte, h):
     update_velocities(h) # 更新粒子的速度
 
 
-window = ti.ui.Window('Shape matching - Bunny', (800, 800), fps_limit=60)
+window = ti.ui.Window('Shape matching - Bunny', (800, 800), fps_limit=30)
 scene = window.get_scene()
 camera = ti.ui.make_camera()
 camera.position(0.5, 1.5, 2.0)

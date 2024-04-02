@@ -12,7 +12,35 @@ def get_obb_from_points(points):
     #   | 7 - | 6
     #   |/    |/
     #   4 --- 5
-    raise NotImplementedError
+    # raise NotImplementedError
+
+    ## move to center
+    center = np.mean(points, axis=0)
+    X = points - center
+
+    ## covariance matrix
+    S = X.T @ X
+
+    ## eigen value decomposition
+    _, Q = np.linalg.eig(S)
+
+    ## find the maximum/minimum projection
+    lmax = np.max(X @ Q, axis=0)
+    lmin = np.min(X @ Q, axis=0)
+
+    corners = np.array([
+                        [lmin[0], lmax[1], lmax[2]],
+                        [lmax[0], lmax[1], lmax[2]],
+                        [lmax[0], lmin[1], lmax[2]],
+                        [lmin[0], lmin[1], lmax[2]],
+                        [lmin[0], lmax[1], lmin[2]],
+                        [lmax[0], lmax[1], lmin[2]],
+                        [lmax[0], lmin[1], lmin[2]],
+                        [lmin[0], lmin[1], lmin[2]],
+                        ])
+    
+    corners = corners @ Q.T + center
+
     return corners, center
 
 scene = pywavefront.Wavefront('stanford-bunny.obj')
