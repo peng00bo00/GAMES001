@@ -69,12 +69,13 @@ def solve_constraints():
         H += qi.outer_product(pi)
     
     ## SVD
-    U, S, V = ti.svd(H)
+    U, _, V = ti.svd(H)
     
     ## calculate R and t
     R = V @ U.transpose()
     t = pc - R @ qc
 
+    ## update cur_vertices
     for i in range(vertices_num):
         target = R@rest_vertices[i] + t
         correct = (target - cur_vertices[i]) * 0.1
