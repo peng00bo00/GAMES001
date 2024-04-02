@@ -56,7 +56,25 @@ def semi_euler(h: ti.f32):
 def solve_constraints():
     # TODO: your code here
     # 请使用基于 SVD 的 shape matching 算法实现碰撞约束，具体来说，你需要根据 rest_vertices 和 cur_vertices 找到最优的旋转变换 R 和平移向量 t，然后就可以用下方的代码更新 cur_vertices
-    raise NotImplementedError
+    # raise NotImplementedError
+    
+    ## construct H matrix
+    H = ti.Matrix([[0.,0.,0.], [0.,0.,0.], [0.,0.,0.]])
+    qc = rest_center[None]
+    pc = compute_center()
+
+    for i in range(vertices_num):
+        qi = rest_vertices[i] - qc
+        pi = cur_vertices[i] - pc
+        H += qi.outer_product(pi)
+    
+    ## SVD
+    U, S, V = ti.svd(H)
+    
+    ## calculate R and t
+    R = V @ U.transpose()
+    t = pc - R @ qc
+
     for i in range(vertices_num):
         target = R@rest_vertices[i] + t
         correct = (target - cur_vertices[i]) * 0.1
@@ -84,7 +102,7 @@ def update(maxIte, h):
     update_velocities(h) # 更新粒子的速度
 
 
-window = ti.ui.Window('Shape matching - Bunny', (800, 800))
+window = ti.ui.Window('Shape matching - Bunny', (800, 800), fps_limit=60)
 scene = window.get_scene()
 camera = ti.ui.make_camera()
 camera.position(0.5, 1.5, 2.0)
