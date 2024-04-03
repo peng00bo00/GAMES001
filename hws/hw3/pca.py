@@ -29,13 +29,13 @@ def get_obb_from_points(points):
     lmin = np.min(X @ Q, axis=0)
 
     corners = np.array([
-                        [lmin[0], lmax[1], lmax[2]],
-                        [lmax[0], lmax[1], lmax[2]],
                         [lmax[0], lmin[1], lmax[2]],
+                        [lmax[0], lmax[1], lmax[2]],
+                        [lmin[0], lmax[1], lmax[2]],
                         [lmin[0], lmin[1], lmax[2]],
-                        [lmin[0], lmax[1], lmin[2]],
-                        [lmax[0], lmax[1], lmin[2]],
                         [lmax[0], lmin[1], lmin[2]],
+                        [lmax[0], lmax[1], lmin[2]],
+                        [lmin[0], lmax[1], lmin[2]],
                         [lmin[0], lmin[1], lmin[2]],
                         ])
     
