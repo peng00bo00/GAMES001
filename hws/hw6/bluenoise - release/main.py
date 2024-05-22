@@ -29,3 +29,15 @@ SaveGreyImage(noise2, 'output/noise2.png')
 
 noise2_fft = ImageToFFT(noise2)
 SaveGreyImage(noise2_fft, 'output/noise2_fft.png')
+
+from scipy.stats import qmc
+
+for img in [noise0, noise1, noise2]:
+    loc_x, loc_y = np.where(img > 0)
+    sample = np.stack([loc_x, loc_y]).T
+
+    l_bounds = [0, 0]
+    u_bounds = size
+    space = qmc.scale(sample, l_bounds, u_bounds, reverse=True)
+
+    print(qmc.discrepancy(space))
