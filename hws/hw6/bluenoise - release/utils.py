@@ -149,3 +149,19 @@ def PoissonDiskSampling(size, radius, max_iter=100):
         img[x, y] = 255
 
     return img
+
+
+def SampleDiscrepancy(img):
+    """Calculate the discrepancy of a 2D image.
+    """
+
+    from scipy.stats import qmc
+
+    loc_x, loc_y = np.where(img > 0)
+    sample = np.stack([loc_x, loc_y]).T
+
+    l_bounds = (0, 0)
+    u_bounds = img.shape
+    space = qmc.scale(sample, l_bounds, u_bounds, reverse=True)
+
+    return qmc.discrepancy(space)
