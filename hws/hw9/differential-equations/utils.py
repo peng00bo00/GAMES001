@@ -14,16 +14,62 @@ def iter_jacobi(u):
 
 def explicit_euler(position, velocity, acceleration, dt):
     # TODO: your code here
-    raise NotImplementedError
+    # raise NotImplementedError
+
+    ## update position
+    _position = position + velocity * dt
+
+    ## update velocity
+    _velocity = velocity + acceleration(position) * dt
+
+    return _position, _velocity
 
 def symplectic_euler(position, velocity, acceleration, dt):
     # TODO: your code here
-    raise NotImplementedError
+    # raise NotImplementedError
+
+    ## update velocity
+    velocity = velocity + acceleration(position) * dt
+
+    ## update position
+    position = position + velocity * dt
+
+    return position, velocity
 
 def symplectic_euler_2(position, velocity, acceleration, dt):
     # TODO: your code here
-    raise NotImplementedError
+    # raise NotImplementedError
+
+    ## update mid-point velocity
+    velocity_mid = velocity + 0.5 * acceleration(position) * dt
+    
+    ## update position
+    position = position + velocity_mid * dt
+
+    ## update velocity
+    velocity = velocity_mid + 0.5 * acceleration(position) * dt
+
+    return position, velocity
 
 def symplectic_euler_3(position, velocity, acceleration, dt):
     # TODO: your code here
-    raise NotImplementedError
+    # raise NotImplementedError
+
+    def expDV(d):
+        return velocity + d * acceleration(position) * dt
+    
+    def expDT(c):
+        return position + c * velocity * dt
+    
+    ci = [1, -2/3, 2/3]
+    di = [-1/24, 3/4, 7/24]
+
+    ci.reverse()
+    di.reverse()
+
+    ## update velocity and position iteratively
+    for c, d in zip(ci, di):
+        velocity = expDV(d)
+        position = expDT(c)
+
+    return position, velocity

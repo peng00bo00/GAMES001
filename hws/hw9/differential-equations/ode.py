@@ -35,6 +35,13 @@ trajectory.append(position)
 
 for i in range(4000):
     position, velocity = symplectic_euler(position, velocity, acceleration, h)
+
+    # ## Midpoint method
+    # position, velocity = symplectic_euler_2(position, velocity, acceleration, h)
+
+    # ## third-order method
+    # position, velocity = symplectic_euler_3(position, velocity, acceleration, h)
+
     trajectory.append(position)
 
 plt.plot([x[0] for x in trajectory], [x[1] for x in trajectory], linewidth=0.3)
@@ -42,4 +49,4 @@ plt.gca().set_aspect('equal', adjustable='box')
 plt.grid(True)
 plt.xlim(-1, 0.5)
 plt.ylim(-0.65, 0.65)
-plt.savefig('output/symplectic_3.png')
+plt.savefig('output/symplectic.png')
