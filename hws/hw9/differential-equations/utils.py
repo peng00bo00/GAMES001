@@ -10,7 +10,13 @@ def compute_laplace_residual(u):
 
 def iter_jacobi(u):
     # TODO: your code here
-    raise NotImplementedError
+    # raise NotImplementedError
+    H, W = u.shape
+    u_prev = u.copy()
+    
+    for i in range(1, H-1):
+        for j in range(1, W-1):
+            u[i, j] = 1/4 * (u_prev[i-1, j] + u_prev[i+1, j] + u_prev[i, j-1] + u_prev[i, j+1])
 
 def explicit_euler(position, velocity, acceleration, dt):
     # TODO: your code here
